@@ -5,6 +5,39 @@ In this worksheet, we'll be exploring various plot types (i.e., geometric object
 
 1.  To get started, load the `tidyverse` and `gapminder` R packages.
 
+``` r
+library(tidyverse)
+```
+
+    ## Warning: package 'tidyverse' was built under R version 3.5.1
+
+    ## -- Attaching packages ------------------------------------------------------------------ tidyverse 1.2.1 --
+
+    ## v ggplot2 2.2.1     v purrr   0.2.5
+    ## v tibble  1.4.2     v dplyr   0.7.6
+    ## v tidyr   0.8.1     v stringr 1.3.1
+    ## v readr   1.1.1     v forcats 0.3.0
+
+    ## Warning: package 'tidyr' was built under R version 3.5.1
+
+    ## Warning: package 'readr' was built under R version 3.5.1
+
+    ## Warning: package 'purrr' was built under R version 3.5.1
+
+    ## Warning: package 'dplyr' was built under R version 3.5.1
+
+    ## Warning: package 'forcats' was built under R version 3.5.1
+
+    ## -- Conflicts --------------------------------------------------------------------- tidyverse_conflicts() --
+    ## x dplyr::filter() masks stats::filter()
+    ## x dplyr::lag()    masks stats::lag()
+
+``` r
+library(gapminder)
+```
+
+    ## Warning: package 'gapminder' was built under R version 3.5.1
+
 Scatterplot
 -----------
 
@@ -16,28 +49,60 @@ Let's look at a *scatterplot* of `gdpPercap` vs. `lifeExp`.
 | Grammar Component     | Specification |
 |-----------------------|---------------|
 | **data**              | `gapminder`   |
-| **aesthetic mapping** |               |
-| **geometric object**  |               |
-| scale                 |               |
-| statistical transform |               |
-| coordinate system     |               |
-| facetting             |               |
+| **aesthetic mapping** | `x` and `y`   |
+| **geometric object**  | point         |
+| scale                 | linear        |
+| statistical transform | none          |
+| coordinate system     | rectangular   |
+| facetting             | none          |
 
 1.  Populate the data and aesthetic mapping in `ggplot`. What is returned? What's missing?
 
-2.  Add the missing component as a *layer*.
+``` r
+ggplot(gapminder, aes(x=lifeExp, y=gdpPercap))
+```
+
+![](cm006-exercise-df_files/figure-markdown_github/unnamed-chunk-2-1.png)
+
+1.  Add the missing component as a *layer*.
+
+``` r
+ggplot(gapminder, aes(x=lifeExp, y=gdpPercap)) + 
+  geom_point()
+```
+
+![](cm006-exercise-df_files/figure-markdown_github/unnamed-chunk-3-1.png)
 
 Notice the "metaprogramming" again!
 
 1.  You *must* remember to put the aesthetic mappings in the `aes` function! What happens if you forget?
 
-2.  Put the x-axis on a log scale, first by transforming the x variable.
+``` r
+#ggplot(gapminder, x = lifeExp, y = gapminder) +        ## dont miss aes function
+#  gemo_point()
+
+ggplot(gapminder) +        ## dont miss aes function
+  geom_point(aes(x = lifeExp, y = gdpPercap))
+```
+
+![](cm006-exercise-df_files/figure-markdown_github/unnamed-chunk-4-1.png)
+
+1.  Put the x-axis on a log scale, first by transforming the x variable.
     -   Note: `ggplot2` does some data wrangling and computations itself! We don't always have to modify the data frame.
-3.  Try again, this time by changing the *scale* (this way is better).
 
-4.  The aesthetic mappings can be specified on the geom layer if you want, instead of the main `ggplot` call. Give it a try:
+``` r
+ggplot(gapminder,aes(x = lifeExp, y = log(gdpPercap))) +
+  geom_point() +
+  scale_y_log10()
+```
 
-5.  Optional: git stage and commit
+![](cm006-exercise-df_files/figure-markdown_github/unnamed-chunk-5-1.png)
+
+1.  Try again, this time by changing the *scale* (this way is better).
+
+2.  The aesthetic mappings can be specified on the geom layer if you want, instead of the main `ggplot` call. Give it a try:
+
+3.  Optional: git stage and commit
 
 **Uses of a scatterplot**:
 
