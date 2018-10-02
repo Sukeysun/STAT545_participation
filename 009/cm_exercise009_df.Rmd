@@ -1,8 +1,6 @@
 ---
-title: "cm009 Exercises: tidy data"
-output: html_notebook
-editor_options: 
-  chunk_output_type: inline
+title: 'cm009 Exercises: tidy data'
+output: github_document
 ---
 
 ```{r}
@@ -11,15 +9,25 @@ suppressPackageStartupMessages(library(tidyverse))
 
 ## Reading and Writing Data: Exercises
 
-Make a tibble of letters, their order in the alphabet, and then a pasting of the two columns together.
+Make a `tibble` of letters, their order in the alphabet, and then a pasting of the two columns together.
 
 ```{r}
+tibble( let = letters,
+        num = 1:length(letters),
+        comb = paste(let, num))
 
+######### tibble vs tribble
 ```
 
-Make a tibble of three names and commute times.
+Make a `tribble` of three names and commute times.
 
 ```{r}
+tribble(
+  ~name, ~commuteTime,
+  "Frank", 30,
+  "Lisa", 15,
+  "Fred", 40
+)
 
 ```
 
@@ -27,19 +35,19 @@ Make a tibble of three names and commute times.
 Write the `iris` data frame as a `csv`. 
 
 ```{r}
-
+write.csv(iris, "iris.csv")
 ```
 
 Write the `iris` data frame to a file delimited by a dollar sign. 
 
 ```{r}
-
+write_delim(iris, "iris.txt", delim = "$")
 ```
 
 Read the dollar-delimited `iris` data to a tibble.
 
 ```{r}
-
+read_delim("iris.txt", delim = "$")
 ```
 
 Read these three LOTR csv's, saving them to `lotr1`, `lotr2`, and `lotr3`:
@@ -49,7 +57,9 @@ Read these three LOTR csv's, saving them to `lotr1`, `lotr2`, and `lotr3`:
 - https://github.com/jennybc/lotr-tidy/blob/master/data/The_Return_Of_The_King.csv
 
 ```{r}
-
+lotr1 <- read.csv("https://raw.githubusercontent.com/jennybc/lotr-tidy/master/data/The_Fellowship_Of_The_Ring.csv")
+lotr2 <- read.csv("https://raw.githubusercontent.com/jennybc/lotr-tidy/master/data/The_Two_Towers.csv")
+lotr3 <- read.csv("https://github.com/jennybc/lotr-tidy/blob/master/data/The_Return_Of_The_King.csv")
 ```
 
 ## `gather()`
