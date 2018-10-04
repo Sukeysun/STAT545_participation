@@ -18,7 +18,7 @@ suppressPackageStartupMessages(library(nycflights13))
 
 ### Let's join tibbles using four mutating functions:  `left_join`, `right_join`, `inner_join` and `full_join`.
 
-- create two tibbles named `a` and `b`, similar to Data Wrangling Cheatsheet
+- create two tibbles named `a` and `b`, similar to Data Wrangling Cheatsheet.
 - use `left_join`, `right_join`, `inner_join` and `full_join` functions
 - example for `left_join`: Join matching rows from b to a
 - example for `right_join`: Join matching rows from a to b

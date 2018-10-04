@@ -35,7 +35,7 @@ Types of mutating join
 
 ### Let's join tibbles using four mutating functions: `left_join`, `right_join`, `inner_join` and `full_join`.
 
--   create two tibbles named `a` and `b`, similar to Data Wrangling Cheatsheet
+-   create two tibbles named `a` and `b`, similar to Data Wrangling Cheatsheet.
 -   use `left_join`, `right_join`, `inner_join` and `full_join` functions
 -   example for `left_join`: Join matching rows from b to a
 -   example for `right_join`: Join matching rows from a to b
@@ -439,10 +439,10 @@ union(y,z)
     ## # A tibble: 4 x 2
     ##   x1       x2
     ##   <chr> <int>
-    ## 1 C         3
-    ## 2 D         4
-    ## 3 A         1
-    ## 4 B         2
+    ## 1 A         1
+    ## 2 B         2
+    ## 3 C         3
+    ## 4 D         4
 
 example for `setdiff`: Rows that appear in `y` but not `z`. **Caution:** `setdiff` for `y` to `z` and `z` to `y` are different.
 ===============================================================================================================================
