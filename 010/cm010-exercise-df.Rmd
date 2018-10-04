@@ -37,37 +37,37 @@ suppressPackageStartupMessages(library(nycflights13))
 ### left_join: Join matching rows from `b` to `a` by matching "x1" variable
 
 ```{r}
-left_join(a, b, by = "x1")
+left_join(a, b, by = "x1")   ## this new table contains all x1 values of left table
 ```
 
 ### right_join: Join matching rows from `a` to `b` by matching "x1" variable.
 
 ```{r}
-right_join(a, b, by = "x1")
+right_join(a, b, by = "x1")  ## all x1 values from b table
 ```
 
 ### inner_join: Join data. Retain only rows in both sets `a` to `b` by matching "x1" variable.
 
 ```{r}
-inner_join(a, b, by = "x1")
+inner_join(a, b, by = "x1")   ## only x1 values both from a and b
 ```
 
 ### full_join: Join data. Retain all values, all rows of `a` to `b` by matching "x1"
 
 ```{r}
-full_join(a, b, by = "x1")
+full_join(a, b, by = "x1") ## all x1 values 
 ```
 
 ### what happen if we do not specify `by` option?
 
 ```{r}
-left_join(a, b)
+left_join(a, b)   ## it reports error: joining by "x1" 
 ```
 
 ### what happen if we specify two different variables from two tibbles `a` to `b`?
 
 ```{r}
-left_join(a, b, by = c("x1" = "x3"))
+left_join(a, b, by = c("x1" = "x3"))  ## x1 from a and x3 from b. if they dont match, then returns NA
 ```
 
 ### what happen if two columns of `a` and `c` datasets have the identical names?
@@ -118,6 +118,7 @@ colnames(flights2)
 ```{r}
 # Which join function to use?
 colnames(airlines)
+colnames(flights2)
 
 flights2 %>% 
   left_join(airlines)
@@ -126,13 +127,17 @@ flights2 %>%
 ### 4. Add weather information to the `flights2` dataset by matching "year" and "time_hour" variables.
 
 ```{r}
-# add weather information to the flights2 dataset by matching "year" and "time_hour"
 colnames(weather)
 flights2 %>% left_join(weather, by = c("year", "time_hour"))
 
-#add weather information to the flights2 dataset by matching only "time_hour" variable.
-flights2 %>% left_join(weather, by = "time_hour")
 ```
+
+### 5. Add `weather` information to the `flights2` dataset by matching only "time_hour" variable
+```{r}
+flights2 %>% left_join(weather, by = "time_hour")
+
+```
+
 
 ## Types of filtering join
 
@@ -149,18 +154,21 @@ flights2 %>% left_join(weather, by = "time_hour")
 
 ```{r}
 semi_join(a,b)
+a
+b
+
 ```
 
 # example for `anti_join`: All rows in `a` that do not have a match in `b`
 
 ```{r}
-anti_join(a,b)
+anti_join(a,b, by = "x1")
 ```
 
 # example of joinin by matching two variables from both datasets `a` and `c`
 
 ```{r}
-semi_join(a, c, by = c("x1", "x2"))
+semi_join(a, c, by = c("x1", "x2"))  ## x1 from a and x2 from c
 ```
 
 ## Types of Set Operations for two datasets
@@ -205,8 +213,13 @@ setdiff(z,y)
 
 ```{r}
 (x <- tibble(x1 = c("B", "C", "D"), x3 = 2:4))
-#intersect(y,x)
-#intersect(y,x)
+
+y
+z
+
+intersect(y,z)
+# 
+# intersect(y,x) # colnames must same
 ```
 
 ## Types of binding datasets
@@ -223,14 +236,18 @@ setdiff(z,y)
 ### example for `bind_rows`: Append z to y as new rows
 
 ```{r}
+## dont need have same column names
 bind_rows(y,z)
+bind_rows(x,y)
 ```
 
 ### example for `bind_cols`: Append z to y as new columns. __Caution__: matches rows by position
 
 ```{r}
+## dont need have same column names
 bind_cols(y,z) #check colnames
 bind_cols(z,y)
+bind_cols(x,y)
 ```
 
 ### what happen if colnames are different? 
@@ -245,21 +262,64 @@ bind_cols(y,x)
 ##Practice Exercises
 Practice these concepts in the following exercises. It might help you to first identify the type of function you are applying.
 
-### 1. Let's create a tibble `a` with x1 and x2 coulmns and have duplicated element in x1 column. Create another tibble `b` with x1 and x3 columns. Then apply `left_join` function `a` to `b` and `b` to `a`. 
 
-### 2. Filter the rows of `flights2` by matching "year" and "time_hour" variables to `weather` dataset. Use both `semi_join()` and `anti_join()`
 
+### 1. Filter the rows of `flights2` by matching "year" and "time_hour" variables to `weather` dataset. Use both `semi_join()` and `anti_join()`
 ```{r}
-semi_join(flights2, weather, by = c("year", "time_hour"))
-anti_join(flights2, weather, by = c("year", "time_hour"))
+
+semi_join(flights2, weather, by = c("year", "time_hour"))  ## return 1000 rows
+
+anti_join(flights2, weather, by = c("year", "time_hour"))  ## returns 0 row
+
 ```
 
-### 3. Can we apply `set` and `binding` funcions to `nycflights13` datasets. Why and why not?
+
+### 2. Can we apply `set` and `binding` funcions between `flights2` and `weather` datasets. Why and why not?
 
 ```{r}
-#intersect(flights2, weather)
-#setdiff(flights2, weather)
-#bind_rows(flights2, weather)
-#bind_cos(flights2, weather)
+aa <- colnames(flights2)
+bb <- colnames(weather)
+intersect(aa,bb)   ## return only year and timehour
+
+
+#intersect(flights2, weather) ## they dont have same column names
+#setdiff(flights2, weather)    ## they dont have same column names
+
+# union(flights2,weather)     ## they dont have same column names
+bind_rows(flights2, weather)  
+
+#bind_cols(flights2, weather) ## two dataframe must have same length
+
+
+sub_flights2 <- flights2 %>% 
+  select("year", "time_hour")
+
+sub_weather <- weather[1:1000,] %>% 
+  select("year", "time_hour")
+
+intersect(sub_flights2, sub_weather) 
+setdiff(sub_flights2, sub_weather)   
+
+union(sub_flights2,sub_weather)     
+bind_rows(sub_flights2, sub_weather)  
+
+bind_cols(sub_flights2, sub_weather) 
+
+
 ```
 
+### 3. Let's create a tibble `p` with "x1" and "x2" coulmns and have duplicated element in "x1" column. Create another tibble `q` with "x1" and "x3" columns. Then apply `left_join` function `p` to `q` and `q` to `p`.
+
+```{r}
+(p <- tibble(x1 = c("A","B","C","A"),
+                  x2 = c(1,2,3,4)))
+
+(q <- tibble(x1 = c("A","b","C"),
+             x3 = c("T","F","T")))
+p %>% 
+  left_join(q, by = "x1")
+
+q %>% 
+  left_join(p, by = "x1")
+
+```
