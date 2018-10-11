@@ -20,10 +20,24 @@ suppressPackageStartupMessages(library(tidyverse))
     ## Warning: package 'forcats' was built under R version 3.5.1
 
 ``` r
+#library(tidyr)
 library(gapminder)
 ```
 
     ## Warning: package 'gapminder' was built under R version 3.5.1
+
+``` r
+library(lubridate)
+```
+
+    ## Warning: package 'lubridate' was built under R version 3.5.1
+
+    ## 
+    ## Attaching package: 'lubridate'
+
+    ## The following object is masked from 'package:base':
+    ## 
+    ##     date
 
 Factors
 =======
@@ -79,163 +93,81 @@ str(lotr2)
 Examples of problems encountered with factors. (ideas came from [R Bloggers](https://www.r-bloggers.com/factors-are-not-first-class-citizens-in-r/))
 
 ``` r
+head( iris )
+```
+
+    ##   Sepal.Length Sepal.Width Petal.Length Petal.Width Species
+    ## 1          5.1         3.5          1.4         0.2  setosa
+    ## 2          4.9         3.0          1.4         0.2  setosa
+    ## 3          4.7         3.2          1.3         0.2  setosa
+    ## 4          4.6         3.1          1.5         0.2  setosa
+    ## 5          5.0         3.6          1.4         0.2  setosa
+    ## 6          5.4         3.9          1.7         0.4  setosa
+
+``` r
+print("str of specise")
+```
+
+    ## [1] "str of specise"
+
+``` r
+str(iris$Species)
+```
+
+    ##  Factor w/ 3 levels "setosa","versicolor",..: 1 1 1 1 1 1 1 1 1 1 ...
+
+``` r
+print("unique of specise")
+```
+
+    ## [1] "unique of specise"
+
+``` r
+unique(iris$Species)
+```
+
+    ## [1] setosa     versicolor virginica 
+    ## Levels: setosa versicolor virginica
+
+``` r
 iris %>% 
-  mutate(Species = ifelse(Species == "versicolor", "vers", Species))
+  mutate(Species = ifelse(Species == "versicolor", "vers", Species)) %>% 
+  str()
 ```
 
     ## Warning: package 'bindrcpp' was built under R version 3.5.1
 
-    ##     Sepal.Length Sepal.Width Petal.Length Petal.Width Species
-    ## 1            5.1         3.5          1.4         0.2       1
-    ## 2            4.9         3.0          1.4         0.2       1
-    ## 3            4.7         3.2          1.3         0.2       1
-    ## 4            4.6         3.1          1.5         0.2       1
-    ## 5            5.0         3.6          1.4         0.2       1
-    ## 6            5.4         3.9          1.7         0.4       1
-    ## 7            4.6         3.4          1.4         0.3       1
-    ## 8            5.0         3.4          1.5         0.2       1
-    ## 9            4.4         2.9          1.4         0.2       1
-    ## 10           4.9         3.1          1.5         0.1       1
-    ## 11           5.4         3.7          1.5         0.2       1
-    ## 12           4.8         3.4          1.6         0.2       1
-    ## 13           4.8         3.0          1.4         0.1       1
-    ## 14           4.3         3.0          1.1         0.1       1
-    ## 15           5.8         4.0          1.2         0.2       1
-    ## 16           5.7         4.4          1.5         0.4       1
-    ## 17           5.4         3.9          1.3         0.4       1
-    ## 18           5.1         3.5          1.4         0.3       1
-    ## 19           5.7         3.8          1.7         0.3       1
-    ## 20           5.1         3.8          1.5         0.3       1
-    ## 21           5.4         3.4          1.7         0.2       1
-    ## 22           5.1         3.7          1.5         0.4       1
-    ## 23           4.6         3.6          1.0         0.2       1
-    ## 24           5.1         3.3          1.7         0.5       1
-    ## 25           4.8         3.4          1.9         0.2       1
-    ## 26           5.0         3.0          1.6         0.2       1
-    ## 27           5.0         3.4          1.6         0.4       1
-    ## 28           5.2         3.5          1.5         0.2       1
-    ## 29           5.2         3.4          1.4         0.2       1
-    ## 30           4.7         3.2          1.6         0.2       1
-    ## 31           4.8         3.1          1.6         0.2       1
-    ## 32           5.4         3.4          1.5         0.4       1
-    ## 33           5.2         4.1          1.5         0.1       1
-    ## 34           5.5         4.2          1.4         0.2       1
-    ## 35           4.9         3.1          1.5         0.2       1
-    ## 36           5.0         3.2          1.2         0.2       1
-    ## 37           5.5         3.5          1.3         0.2       1
-    ## 38           4.9         3.6          1.4         0.1       1
-    ## 39           4.4         3.0          1.3         0.2       1
-    ## 40           5.1         3.4          1.5         0.2       1
-    ## 41           5.0         3.5          1.3         0.3       1
-    ## 42           4.5         2.3          1.3         0.3       1
-    ## 43           4.4         3.2          1.3         0.2       1
-    ## 44           5.0         3.5          1.6         0.6       1
-    ## 45           5.1         3.8          1.9         0.4       1
-    ## 46           4.8         3.0          1.4         0.3       1
-    ## 47           5.1         3.8          1.6         0.2       1
-    ## 48           4.6         3.2          1.4         0.2       1
-    ## 49           5.3         3.7          1.5         0.2       1
-    ## 50           5.0         3.3          1.4         0.2       1
-    ## 51           7.0         3.2          4.7         1.4    vers
-    ## 52           6.4         3.2          4.5         1.5    vers
-    ## 53           6.9         3.1          4.9         1.5    vers
-    ## 54           5.5         2.3          4.0         1.3    vers
-    ## 55           6.5         2.8          4.6         1.5    vers
-    ## 56           5.7         2.8          4.5         1.3    vers
-    ## 57           6.3         3.3          4.7         1.6    vers
-    ## 58           4.9         2.4          3.3         1.0    vers
-    ## 59           6.6         2.9          4.6         1.3    vers
-    ## 60           5.2         2.7          3.9         1.4    vers
-    ## 61           5.0         2.0          3.5         1.0    vers
-    ## 62           5.9         3.0          4.2         1.5    vers
-    ## 63           6.0         2.2          4.0         1.0    vers
-    ## 64           6.1         2.9          4.7         1.4    vers
-    ## 65           5.6         2.9          3.6         1.3    vers
-    ## 66           6.7         3.1          4.4         1.4    vers
-    ## 67           5.6         3.0          4.5         1.5    vers
-    ## 68           5.8         2.7          4.1         1.0    vers
-    ## 69           6.2         2.2          4.5         1.5    vers
-    ## 70           5.6         2.5          3.9         1.1    vers
-    ## 71           5.9         3.2          4.8         1.8    vers
-    ## 72           6.1         2.8          4.0         1.3    vers
-    ## 73           6.3         2.5          4.9         1.5    vers
-    ## 74           6.1         2.8          4.7         1.2    vers
-    ## 75           6.4         2.9          4.3         1.3    vers
-    ## 76           6.6         3.0          4.4         1.4    vers
-    ## 77           6.8         2.8          4.8         1.4    vers
-    ## 78           6.7         3.0          5.0         1.7    vers
-    ## 79           6.0         2.9          4.5         1.5    vers
-    ## 80           5.7         2.6          3.5         1.0    vers
-    ## 81           5.5         2.4          3.8         1.1    vers
-    ## 82           5.5         2.4          3.7         1.0    vers
-    ## 83           5.8         2.7          3.9         1.2    vers
-    ## 84           6.0         2.7          5.1         1.6    vers
-    ## 85           5.4         3.0          4.5         1.5    vers
-    ## 86           6.0         3.4          4.5         1.6    vers
-    ## 87           6.7         3.1          4.7         1.5    vers
-    ## 88           6.3         2.3          4.4         1.3    vers
-    ## 89           5.6         3.0          4.1         1.3    vers
-    ## 90           5.5         2.5          4.0         1.3    vers
-    ## 91           5.5         2.6          4.4         1.2    vers
-    ## 92           6.1         3.0          4.6         1.4    vers
-    ## 93           5.8         2.6          4.0         1.2    vers
-    ## 94           5.0         2.3          3.3         1.0    vers
-    ## 95           5.6         2.7          4.2         1.3    vers
-    ## 96           5.7         3.0          4.2         1.2    vers
-    ## 97           5.7         2.9          4.2         1.3    vers
-    ## 98           6.2         2.9          4.3         1.3    vers
-    ## 99           5.1         2.5          3.0         1.1    vers
-    ## 100          5.7         2.8          4.1         1.3    vers
-    ## 101          6.3         3.3          6.0         2.5       3
-    ## 102          5.8         2.7          5.1         1.9       3
-    ## 103          7.1         3.0          5.9         2.1       3
-    ## 104          6.3         2.9          5.6         1.8       3
-    ## 105          6.5         3.0          5.8         2.2       3
-    ## 106          7.6         3.0          6.6         2.1       3
-    ## 107          4.9         2.5          4.5         1.7       3
-    ## 108          7.3         2.9          6.3         1.8       3
-    ## 109          6.7         2.5          5.8         1.8       3
-    ## 110          7.2         3.6          6.1         2.5       3
-    ## 111          6.5         3.2          5.1         2.0       3
-    ## 112          6.4         2.7          5.3         1.9       3
-    ## 113          6.8         3.0          5.5         2.1       3
-    ## 114          5.7         2.5          5.0         2.0       3
-    ## 115          5.8         2.8          5.1         2.4       3
-    ## 116          6.4         3.2          5.3         2.3       3
-    ## 117          6.5         3.0          5.5         1.8       3
-    ## 118          7.7         3.8          6.7         2.2       3
-    ## 119          7.7         2.6          6.9         2.3       3
-    ## 120          6.0         2.2          5.0         1.5       3
-    ## 121          6.9         3.2          5.7         2.3       3
-    ## 122          5.6         2.8          4.9         2.0       3
-    ## 123          7.7         2.8          6.7         2.0       3
-    ## 124          6.3         2.7          4.9         1.8       3
-    ## 125          6.7         3.3          5.7         2.1       3
-    ## 126          7.2         3.2          6.0         1.8       3
-    ## 127          6.2         2.8          4.8         1.8       3
-    ## 128          6.1         3.0          4.9         1.8       3
-    ## 129          6.4         2.8          5.6         2.1       3
-    ## 130          7.2         3.0          5.8         1.6       3
-    ## 131          7.4         2.8          6.1         1.9       3
-    ## 132          7.9         3.8          6.4         2.0       3
-    ## 133          6.4         2.8          5.6         2.2       3
-    ## 134          6.3         2.8          5.1         1.5       3
-    ## 135          6.1         2.6          5.6         1.4       3
-    ## 136          7.7         3.0          6.1         2.3       3
-    ## 137          6.3         3.4          5.6         2.4       3
-    ## 138          6.4         3.1          5.5         1.8       3
-    ## 139          6.0         3.0          4.8         1.8       3
-    ## 140          6.9         3.1          5.4         2.1       3
-    ## 141          6.7         3.1          5.6         2.4       3
-    ## 142          6.9         3.1          5.1         2.3       3
-    ## 143          5.8         2.7          5.1         1.9       3
-    ## 144          6.8         3.2          5.9         2.3       3
-    ## 145          6.7         3.3          5.7         2.5       3
-    ## 146          6.7         3.0          5.2         2.3       3
-    ## 147          6.3         2.5          5.0         1.9       3
-    ## 148          6.5         3.0          5.2         2.0       3
-    ## 149          6.2         3.4          5.4         2.3       3
-    ## 150          5.9         3.0          5.1         1.8       3
+    ## 'data.frame':    150 obs. of  5 variables:
+    ##  $ Sepal.Length: num  5.1 4.9 4.7 4.6 5 5.4 4.6 5 4.4 4.9 ...
+    ##  $ Sepal.Width : num  3.5 3 3.2 3.1 3.6 3.9 3.4 3.4 2.9 3.1 ...
+    ##  $ Petal.Length: num  1.4 1.4 1.3 1.5 1.4 1.7 1.4 1.5 1.4 1.5 ...
+    ##  $ Petal.Width : num  0.2 0.2 0.2 0.2 0.2 0.4 0.3 0.2 0.2 0.1 ...
+    ##  $ Species     : chr  "1" "1" "1" "1" ...
+
+``` r
+iris1 <- iris %>% 
+  mutate(Species = ifelse(Species == "versicolor", "vers", as.character(Species)) )
+print("new iris")
+```
+
+    ## [1] "new iris"
+
+``` r
+unique(iris1$Species)
+```
+
+    ## [1] "setosa"    "vers"      "virginica"
+
+``` r
+fct_count(iris$Species)
+```
+
+    ## # A tibble: 3 x 2
+    ##   f              n
+    ##   <fct>      <int>
+    ## 1 setosa        50
+    ## 2 versicolor    50
+    ## 3 virginica     50
 
 ``` r
 c(iris$Species, "setosa")
@@ -264,6 +196,41 @@ c(iris$Species, "setosa")
     ## [141] "3"      "3"      "3"      "3"      "3"      "3"      "3"     
     ## [148] "3"      "3"      "3"      "setosa"
 
+``` r
+as.character(iris$Species)
+```
+
+    ##   [1] "setosa"     "setosa"     "setosa"     "setosa"     "setosa"    
+    ##   [6] "setosa"     "setosa"     "setosa"     "setosa"     "setosa"    
+    ##  [11] "setosa"     "setosa"     "setosa"     "setosa"     "setosa"    
+    ##  [16] "setosa"     "setosa"     "setosa"     "setosa"     "setosa"    
+    ##  [21] "setosa"     "setosa"     "setosa"     "setosa"     "setosa"    
+    ##  [26] "setosa"     "setosa"     "setosa"     "setosa"     "setosa"    
+    ##  [31] "setosa"     "setosa"     "setosa"     "setosa"     "setosa"    
+    ##  [36] "setosa"     "setosa"     "setosa"     "setosa"     "setosa"    
+    ##  [41] "setosa"     "setosa"     "setosa"     "setosa"     "setosa"    
+    ##  [46] "setosa"     "setosa"     "setosa"     "setosa"     "setosa"    
+    ##  [51] "versicolor" "versicolor" "versicolor" "versicolor" "versicolor"
+    ##  [56] "versicolor" "versicolor" "versicolor" "versicolor" "versicolor"
+    ##  [61] "versicolor" "versicolor" "versicolor" "versicolor" "versicolor"
+    ##  [66] "versicolor" "versicolor" "versicolor" "versicolor" "versicolor"
+    ##  [71] "versicolor" "versicolor" "versicolor" "versicolor" "versicolor"
+    ##  [76] "versicolor" "versicolor" "versicolor" "versicolor" "versicolor"
+    ##  [81] "versicolor" "versicolor" "versicolor" "versicolor" "versicolor"
+    ##  [86] "versicolor" "versicolor" "versicolor" "versicolor" "versicolor"
+    ##  [91] "versicolor" "versicolor" "versicolor" "versicolor" "versicolor"
+    ##  [96] "versicolor" "versicolor" "versicolor" "versicolor" "versicolor"
+    ## [101] "virginica"  "virginica"  "virginica"  "virginica"  "virginica" 
+    ## [106] "virginica"  "virginica"  "virginica"  "virginica"  "virginica" 
+    ## [111] "virginica"  "virginica"  "virginica"  "virginica"  "virginica" 
+    ## [116] "virginica"  "virginica"  "virginica"  "virginica"  "virginica" 
+    ## [121] "virginica"  "virginica"  "virginica"  "virginica"  "virginica" 
+    ## [126] "virginica"  "virginica"  "virginica"  "virginica"  "virginica" 
+    ## [131] "virginica"  "virginica"  "virginica"  "virginica"  "virginica" 
+    ## [136] "virginica"  "virginica"  "virginica"  "virginica"  "virginica" 
+    ## [141] "virginica"  "virginica"  "virginica"  "virginica"  "virginica" 
+    ## [146] "virginica"  "virginica"  "virginica"  "virginica"  "virginica"
+
 -   Base R way of interacting with factors:
     -   `factor()`, or `forcats::parse_factor()`.
     -   `levels()`
@@ -273,13 +240,44 @@ c(iris$Species, "setosa")
 Here is a sample of 10 letters drawn from the possibilities "a", "b", and "c":
 
 ``` r
-set.seed(10)
+set.seed(10)   ### keep the output always same at each generation time
 (draw <- sample(letters[1:3], size = 10, replace = TRUE))
 ```
 
     ##  [1] "b" "a" "b" "c" "a" "a" "a" "a" "b" "b"
 
 Convert `draw` to a factor. What are the levels? How many are there? How many of each category was drawn?
+
+``` r
+draw <- factor(draw)
+draw
+```
+
+    ##  [1] b a b c a a a a b b
+    ## Levels: a b c
+
+``` r
+levels(draw)  ##levels provides access to the levels attribute of a variable. The first form returns the value of the levels of its argument and the second sets the attribute.
+```
+
+    ## [1] "a" "b" "c"
+
+``` r
+nlevels(draw)
+```
+
+    ## [1] 3
+
+``` r
+fct_count(draw)
+```
+
+    ## # A tibble: 3 x 2
+    ##   f         n
+    ##   <fct> <int>
+    ## 1 a         5
+    ## 2 b         4
+    ## 3 c         1
 
 Concatenating Factors
 ---------------------
@@ -292,6 +290,33 @@ c(lotr1$Film, lotr2$Film)
 
     ## [1] 1 1 1 1 1 1
 
+``` r
+fct_c(lotr1$Film, lotr2$Film)
+```
+
+    ## [1] The Fellowship Of The Ring The Fellowship Of The Ring
+    ## [3] The Fellowship Of The Ring The Return Of The King    
+    ## [5] The Return Of The King     The Return Of The King    
+    ## Levels: The Fellowship Of The Ring The Return Of The King
+
+``` r
+fct_count(lotr1$Film)
+```
+
+    ## # A tibble: 1 x 2
+    ##   f                              n
+    ##   <fct>                      <int>
+    ## 1 The Fellowship Of The Ring     3
+
+``` r
+fct_count(lotr2$Film)
+```
+
+    ## # A tibble: 1 x 2
+    ##   f                          n
+    ##   <fct>                  <int>
+    ## 1 The Return Of The King     3
+
 Try binding by row `lotr1` and `lotr2`:
 
 -   with `rbind()`
@@ -299,17 +324,86 @@ Try binding by row `lotr1` and `lotr2`:
 
 Which one is more lenient? Which would you prefer?
 
+``` r
+aa <- rbind(lotr1, lotr2)
+bb <- bind_rows(lotr1,lotr2) 
+```
+
+    ## Warning in bind_rows_(x, .id): Unequal factor levels: coercing to character
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+    ## Warning in bind_rows_(x, .id): binding character and factor vector,
+    ## coercing into character vector
+
+``` r
+#%>% str()  ## film has been changed from factor to chr
+as.character(4)
+```
+
+    ## [1] "4"
+
+``` r
+fct_count(aa$Film)
+```
+
+    ## # A tibble: 2 x 2
+    ##   f                              n
+    ##   <fct>                      <int>
+    ## 1 The Fellowship Of The Ring     3
+    ## 2 The Return Of The King         3
+
+``` r
+fct_count(bb$Film)
+```
+
+    ## # A tibble: 2 x 2
+    ##   f                              n
+    ##   <fct>                      <int>
+    ## 1 The Fellowship Of The Ring     3
+    ## 2 The Return Of The King         3
+
 Unused Levels
 -------------
 
 Levels don't always have to be present ("observed") in the factor. Example of what this means:
 
 ``` r
-gap_gs <- gapminder %>% filter(country %in% c("Germany", "Sweden"))
+gap_gs <- gapminder %>% 
+  filter(country %in% c("Germany", "Sweden"))
 nlevels(gap_gs$country)
 ```
 
     ## [1] 142
+
+``` r
+fct_count(gap_gs$country)
+```
+
+    ## # A tibble: 142 x 2
+    ##    f               n
+    ##    <fct>       <int>
+    ##  1 Afghanistan     0
+    ##  2 Albania         0
+    ##  3 Algeria         0
+    ##  4 Angola          0
+    ##  5 Argentina       0
+    ##  6 Australia       0
+    ##  7 Austria         0
+    ##  8 Bahrain         0
+    ##  9 Bangladesh      0
+    ## 10 Belgium         0
+    ## # ... with 132 more rows
+
+``` r
+as.character(gap_gs$country)
+```
+
+    ##  [1] "Germany" "Germany" "Germany" "Germany" "Germany" "Germany" "Germany"
+    ##  [8] "Germany" "Germany" "Germany" "Germany" "Germany" "Sweden"  "Sweden" 
+    ## [15] "Sweden"  "Sweden"  "Sweden"  "Sweden"  "Sweden"  "Sweden"  "Sweden" 
+    ## [22] "Sweden"  "Sweden"  "Sweden"
 
 Sometimes keeping the levels is good. Other times, not.
 
@@ -324,6 +418,25 @@ gap_small <- gapminder %>%
 
 Exercise: Make a bar chart of the number of times a continent has a country with population &lt; 250,000 in the `gapminder` data set. Try with and without `scale_x_discrete(drop=FALSE)`.
 
+``` r
+gapminder_sub <- gapminder %>%
+  filter(pop < 250000) %>% 
+  group_by(continent) %>%
+  mutate(n = n())
+  
+
+ggplot(gap_small,
+       aes(continent))+
+  geom_bar()+
+  scale_x_discrete(drop=FALSE)  ## remain all the level 
+```
+
+![](cm012_Exercises_files/figure-markdown_github/unnamed-chunk-12-1.png)
+
+``` r
+# scale_x_discrete(drop=TRUE)  ## drop unused level
+```
+
 **Example of when it's bad**: If you ever use the `levels()` function.
 
 How to fix by dropping levels:
@@ -336,6 +449,34 @@ Exercise: get rid of the unused factor levels for country and continent in diffe
 -   `droplevels()`
 -   `fct_drop()` inside `mutate()`
 -   Re-defining the variable as a factor
+
+``` r
+gap_small %>% 
+  droplevels() %>% 
+  str()     ### drop all unused level
+```
+
+    ## Classes 'tbl_df', 'tbl' and 'data.frame':    41 obs. of  6 variables:
+    ##  $ country  : Factor w/ 7 levels "Bahrain","Comoros",..: 1 1 1 1 1 2 2 2 2 3 ...
+    ##  $ continent: Factor w/ 3 levels "Africa","Asia",..: 2 2 2 2 2 1 1 1 1 1 ...
+    ##  $ year     : int  1952 1957 1962 1967 1972 1952 1957 1962 1967 1952 ...
+    ##  $ lifeExp  : num  50.9 53.8 56.9 59.9 63.3 ...
+    ##  $ pop      : int  120447 138655 171863 202182 230800 153936 170928 191689 217378 63149 ...
+    ##  $ gdpPercap: num  9867 11636 12753 14805 18269 ...
+
+``` r
+gap_small %>% 
+  mutate(continent =fct_drop(continent)) %>% 
+  str()  ### only drop all unsued continent
+```
+
+    ## Classes 'tbl_df', 'tbl' and 'data.frame':    41 obs. of  6 variables:
+    ##  $ country  : Factor w/ 142 levels "Afghanistan",..: 8 8 8 8 8 27 27 27 27 36 ...
+    ##  $ continent: Factor w/ 3 levels "Africa","Asia",..: 2 2 2 2 2 1 1 1 1 1 ...
+    ##  $ year     : int  1952 1957 1962 1967 1972 1952 1957 1962 1967 1952 ...
+    ##  $ lifeExp  : num  50.9 53.8 56.9 59.9 63.3 ...
+    ##  $ pop      : int  120447 138655 171863 202182 230800 153936 170928 191689 217378 63149 ...
+    ##  $ gdpPercap: num  9867 11636 12753 14805 18269 ...
 
 Ordering
 --------
@@ -368,7 +509,8 @@ Reorder by frequency:
 
 ``` r
 cont %>% 
-  fct_infreq() %>% 
+  fct_infreq() %>%  ## increasing
+  fct_rev() %>%   ## reverse
   qplot()
 ```
 
@@ -378,6 +520,16 @@ Could also arrange by the order they appear in the factor with `fct_inorder()`.
 
 ### Ordering by Another Variable
 
+Let's use `fct_inorder()`
+
+``` r
+draw %>%
+  fct_inorder()
+```
+
+    ##  [1] b a b c a a a a b b
+    ## Levels: b a c
+
 Here are the 2007 life expectancies of Asian countries:
 
 ``` r
@@ -386,9 +538,17 @@ gap_asia_2007 <- gapminder %>%
 ggplot(gap_asia_2007, aes(lifeExp, country)) + geom_point()
 ```
 
-![](cm012_Exercises_files/figure-markdown_github/unnamed-chunk-17-1.png)
+![](cm012_Exercises_files/figure-markdown_github/unnamed-chunk-18-1.png)
 
 Let's use `fct_reorder()` to reorder the countries of `gap_asia_2007` by life Expectancy, and produce the same plot:
+
+``` r
+gap_asia_2007 %>%  
+  mutate(country = fct_reorder(country, lifeExp)) %>% 
+ggplot( aes(lifeExp, country)) + geom_point()
+```
+
+![](cm012_Exercises_files/figure-markdown_github/unnamed-chunk-19-1.png)
 
 What about when life Expectancy is not unique? Example: life expectancy of each continent:
 
@@ -397,18 +557,27 @@ ggplot(gapminder, aes(continent, lifeExp)) +
   geom_violin()
 ```
 
-![](cm012_Exercises_files/figure-markdown_github/unnamed-chunk-19-1.png)
+![](cm012_Exercises_files/figure-markdown_github/unnamed-chunk-20-1.png)
 
 ``` r
 ggplot(gapminder, aes(continent, lifeExp)) +
   geom_boxplot()
 ```
 
-![](cm012_Exercises_files/figure-markdown_github/unnamed-chunk-19-2.png)
+![](cm012_Exercises_files/figure-markdown_github/unnamed-chunk-20-2.png)
 
 `fct_reorder(f, x)` still works, but does some internal wrangling: a summary statistic (default: median) is computed on `x` for each category in the factor `f`.
 
 Exercise: Try making the above box plot and violin plots, ordered by median lifeExp. Try other functions to order by by modifying the `.fun` argument.
+
+``` r
+gapminder %>% 
+  mutate(continent = fct_reorder(continent,lifeExp)) %>% 
+  ggplot(aes(continent, lifeExp))+
+  geom_boxplot()
+```
+
+![](cm012_Exercises_files/figure-markdown_github/unnamed-chunk-21-1.png)
 
 What if we have two variables plus a non-positional categorical variable? Example: Life expectancy for some select countries. Want legend "ordered by life expectancy" -- but what does that mean?
 
@@ -421,7 +590,7 @@ ggplot(gap_select, aes(year, lifeExp)) +
   geom_line(aes(group=country, colour=country))
 ```
 
-![](cm012_Exercises_files/figure-markdown_github/unnamed-chunk-21-1.png)
+![](cm012_Exercises_files/figure-markdown_github/unnamed-chunk-22-1.png)
 
 Use `fct_reorder2(f, x, y)` to reorder factor `f`:
 
@@ -429,6 +598,16 @@ Use `fct_reorder2(f, x, y)` to reorder factor `f`:
 -   Default is `.fun = last2`, which looks at x-y plot for each category; uses the y-value furthest to the right.
 
 Exercise: Reorder the above line graph so that the legend is in order of last life expectancy. Useful for black-and-white printing!
+
+``` r
+## the legend is order according lifeExp
+gap_select %>% 
+  mutate(country = fct_reorder2(country,year,lifeExp)) %>% 
+  ggplot(aes(year, lifeExp)) +
+  geom_line(aes(group=country, colour=country))
+```
+
+![](cm012_Exercises_files/figure-markdown_github/unnamed-chunk-23-1.png)
 
 ### Ordering "because I said so"
 
@@ -441,12 +620,22 @@ Here's how to use `fct_relevel()` to do that. Exercise: modify the code so that:
 
 ``` r
 gap_asia_2007$country %>% 
-  fct_relevel("Syria") %>% 
+  fct_relevel("Syria", after = 2) %>% ## the level I want to come after n levels
   levels() %>% 
   head()
 ```
 
-    ## [1] "Syria"       "Afghanistan" "Albania"     "Algeria"     "Angola"     
+    ## [1] "Afghanistan" "Albania"     "Syria"       "Algeria"     "Angola"     
+    ## [6] "Argentina"
+
+``` r
+gap_asia_2007$country %>% 
+  fct_relevel("Syria","Algeria", after = 2) %>% ## the level I want to come after n levels
+  levels() %>% 
+  head()
+```
+
+    ## [1] "Afghanistan" "Albania"     "Syria"       "Algeria"     "Angola"     
     ## [6] "Argentina"
 
 Re-coding a Factor
@@ -460,6 +649,7 @@ Exercise: modify the following code to also change "Canada" to read "Can". Hint:
 gap_big_north <- gapminder %>% 
   filter(country %in% c("Canada", "United States", "Mexico")) %>% 
   droplevels()
+
 gap_big_north$country %>% 
   fct_recode("USA" = "United States") %>% 
   levels()
@@ -485,7 +675,7 @@ cont %>%
   qplot()
 ```
 
-![](cm012_Exercises_files/figure-markdown_github/unnamed-chunk-26-1.png)
+![](cm012_Exercises_files/figure-markdown_github/unnamed-chunk-27-1.png)
 
 More practically, we can lump the least frequent levels together as "Other". Modify the above code to use `fct_lump()` instead of `fct_collapse()` so that:
 
@@ -493,6 +683,31 @@ More practically, we can lump the least frequent levels together as "Other". Mod
 -   The bar chart shows the two least frequently observed continents (Hint: use negative `n`).
 -   You let `fct_lump()` decide on the number of non-other continents. How is this chosen?
 -   Note: you can manually specify non-other levels using `fct_other()`.
+
+``` r
+cont %>% 
+  fct_lump() %>% 
+  qplot()
+```
+
+![](cm012_Exercises_files/figure-markdown_github/unnamed-chunk-28-1.png)
+
+``` r
+## keep the first two 
+cont %>% 
+  fct_lump(n=2) %>% 
+  qplot()
+```
+
+![](cm012_Exercises_files/figure-markdown_github/unnamed-chunk-28-2.png)
+
+``` r
+cont %>% 
+  fct_lump(n=4) %>% 
+  qplot()
+```
+
+![](cm012_Exercises_files/figure-markdown_github/unnamed-chunk-28-3.png)
 
 We can use the `w` argument to lump by another variable.
 
@@ -510,7 +725,7 @@ gap_africa %>%
     geom_violin()
 ```
 
-![](cm012_Exercises_files/figure-markdown_github/unnamed-chunk-28-1.png)
+![](cm012_Exercises_files/figure-markdown_github/unnamed-chunk-29-1.png)
 
 Exercises
 ---------
@@ -536,7 +751,7 @@ gss_cat %>%
   geom_line(aes(group=partyid, colour=partyid))
 ```
 
-![](cm012_Exercises_files/figure-markdown_github/unnamed-chunk-31-1.png)
+![](cm012_Exercises_files/figure-markdown_github/unnamed-chunk-32-1.png)
 
 Dates and Times with Lubridate
 ==============================
@@ -545,6 +760,18 @@ Goal here: some exposure to `lubridate`; know it exists.
 
 1.  Use different combinations of y, m, d to make a date time object.
 
-2.  Get `year`, `month`, `yday`, `wday`, `day`.
+``` r
+lubridate::ymd(170511)
+```
 
-3.  Add durations (exact time spans) with `ddays`, `dweeks`, ... and periods (human-interpretable time spans) with `days`, `weeks`, and especially `months`.
+    ## [1] "2017-05-11"
+
+``` r
+lubridate::ymd("2017-May-11")
+```
+
+    ## [1] "2017-05-11"
+
+1.  Get `year`, `month`, `yday`, `wday`, `day`.
+
+2.  Add durations (exact time spans) with `ddays`, `dweeks`, ... and periods (human-interpretable time spans) with `days`, `weeks`, and especially `months`.
