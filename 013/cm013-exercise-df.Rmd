@@ -5,7 +5,7 @@ output: html_document
 
 ```{r}
 suppressPackageStartupMessages(library(tidyverse))
-library(gapminder)
+suppressPackageStartupMessages(library(gapminder))
 ```
 
 
