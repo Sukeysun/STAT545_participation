@@ -1,9 +1,6 @@
 ---
 title: "cm103 Worksheet"
-output: html_notebook
-editor_options: 
-
-  chunk_output_type: inline
+output: github_document
 ---
 
 ```{r}
