@@ -8,41 +8,45 @@
 #
 
 library(shiny)
+a <- 5
+print(a^2)
+bcl <- read.csv("bcl-data.csv", stringsAsFactors = FALSE)
 
 # Define UI for application that draws a histogram
 ui <- fluidPage(
    
-   # Application title
-   titlePanel("Old Faithful Geyser Data"),
-   
-   # Sidebar with a slider input for number of bins 
-   sidebarLayout(
-      sidebarPanel(
-         sliderInput("bins",
-                     "Number of bins:",
-                     min = 1,
-                     max = 50,
-                     value = 30)
-      ),
-      
-      # Show a plot of the generated distribution
-      mainPanel(
-         plotOutput("distPlot")
-      )
-   )
+  # "This is some text",
+  # br(),
+  # p("This is more text"),
+  # tags$h1("Level 1 header"),
+  # h1(em("Level 1 header, part2")),   
+  # HTML("<h1> Level 1 header, part3 </h1>"),   
+  # tags$strong("This text is strongly emphasized."),  
+  # br(),
+  # tags$button("put a button"),  
+  # br(),
+  # a(href = "https://shiny.rstudio.com/articles/tag-glossary.html", "Link to all tags"),
+  # print(a)
+  titlePanel("BC Liquor price app", 
+             windowTitle = "BCL app"),
+  sidebarLayout(
+    sidebarPanel("This text is in the sidebar."),
+    mainPanel(
+              #ggplot2::qplot(bcl$Price)
+              plotOutput("price_hist"),
+              tableOutput("bcl_data")
+              )
+    
+  )
+  
 )
 
 # Define server logic required to draw a histogram
 server <- function(input, output) {
+  output$price_hist <- renderPlot(ggplot2::qplot(bcl$Price))
+  output$bcl_data <- renderTable(head(bcl))
    
-   output$distPlot <- renderPlot({
-      # generate bins based on input$bins from ui.R
-      x    <- faithful[, 2] 
-      bins <- seq(min(x), max(x), length.out = input$bins + 1)
-      
-      # draw the histogram with the specified number of bins
-      hist(x, breaks = bins, col = 'darkgray', border = 'white')
-   })
+
 }
 
 # Run the application 
