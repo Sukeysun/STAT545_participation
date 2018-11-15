@@ -10,6 +10,8 @@
 library(shiny)
 library(tidyverse)
 library(ggplot2)
+library(shinythemes)
+
 a <- 5
 print(a^2)
 bcl <- read.csv("bcl-data.csv", stringsAsFactors = FALSE)
@@ -29,6 +31,10 @@ ui <- fluidPage(
   # br(),
   # a(href = "https://shiny.rstudio.com/articles/tag-glossary.html", "Link to all tags"),
   # print(a)
+  
+  #shinythemes::themeSelector(), 
+  theme = shinytheme("cerulean"),
+  
   titlePanel("BC Liquor price app", 
              windowTitle = "BCL app"),
   sidebarLayout(
