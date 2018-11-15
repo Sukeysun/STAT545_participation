@@ -54,6 +54,7 @@ ui <- fluidPage(
 # Define server logic required to draw a histogram
 server <- function(input, output) {
   observe(print(input$priceInput))
+  
   ## it is stored as a function if using reactive()
   bcl_filtered <- reactive({
     bcl %>% 
